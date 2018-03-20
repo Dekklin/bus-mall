@@ -2,7 +2,16 @@
 Picture.allPics = [];
 Picture.threePics = [];
 var voteCounter = 0;
-var picList = document.getElementById('picList');
+var picList = document.getElementById('piclist');
+
+function handleClick(event) {
+
+}
+
+// var sectionElement = document.getElementById('imgdisplay');
+
+// sectionElement.addEventListener('click', handleClick);
+
 // constructor
 function Picture(name, filepath) {
   this.name = name;
@@ -17,6 +26,17 @@ function xfer(){
   Picture.allPics.push(Picture.threePics[2]);
   Picture.threePics.splice(0, 3);
 }
+
+function resultsRender() {
+  
+  for(var i in Picture.allPics) {
+    var listElement = document.createElement('li');
+    listElement.textContent = (Picture.allPics[i].name + ' has ' + Picture.allPics[i].views + ' views and ' + Picture.allPics[i].votes + ' votes.');
+    picList.appendChild(listElement);
+  }
+}
+
+
 
 new Picture('bag' , 'img/bag.jpg');
 new Picture('banana' , 'img/banana.jpg');
@@ -55,8 +75,11 @@ function load() {
 
 
   //  else...
-  
-  
+  //how many pics you want displayed?
+ // for (i = 0 ; i = 2 ; i ++) {
+ //   var randomIndex = Math.floor(Math.random() * Picture.allPics.length);
+//        imgElementElement
+ // }
   
   
   var randomIndex1 = Math.floor(Math.random() * Picture.allPics.length);
@@ -88,17 +111,19 @@ load();
 function randomPicture() {
   if (voteCounter > 4){
     xfer()
-      for (var i = 0 ; i < Picture.allPics.length ; i++)
-      var liElement = document.createElement('li');
-      liElement.textContent = (Picture.allPics[i].votes + ' votes for ' + Picture.allPics[i].name);
-      picList.appendChild(liElement);
+    resultsRender();
+      // for (var i = 0 ; i < Picture.allPics.length ; i++)
+      // var listElement = document.createElement('li');
+      // listElement.textContent = (Picture.allPics[i].votes + ' votes for ' + Picture.allPics[i].name);
+      // picList.appendChild(listElement);
+
   }
     else {
   voteCounter ++
   //event.target.votes ++
   //Picture.threePics[event.target].votes ++
   //event.target.votes.value ++
-  for(var i = 0; i < Picture.threePics.length; i++)
+  for(var i in Picture.threePics)
     if(event.target.alt === Picture.threePics[i].name){
       Picture.threePics[i].votes ++
 
