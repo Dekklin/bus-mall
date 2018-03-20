@@ -1,16 +1,10 @@
-'use strict'
+'use strict';
 Picture.allPics = [];
 Picture.threePics = [];
+var picNames = [];
+var picVotes = [];
 var voteCounter = 0;
 var picList = document.getElementById('piclist');
-
-function handleClick(event) {
-
-}
-
-// var sectionElement = document.getElementById('imgdisplay');
-
-// sectionElement.addEventListener('click', handleClick);
 
 // constructor
 function Picture(name, filepath) {
@@ -19,21 +13,47 @@ function Picture(name, filepath) {
   this.views = 0
   this.votes = 0
   Picture.allPics.push(this)
+ // picNames.push(this.name)
 }
 function xfer(){
   Picture.allPics.push(Picture.threePics[0]);
   Picture.allPics.push(Picture.threePics[1]);
   Picture.allPics.push(Picture.threePics[2]);
   Picture.threePics.splice(0, 3);
+
 }
 
 function resultsRender() {
+  var arrayOfColors = ['red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue'];
   
   for(var i in Picture.allPics) {
+    picNames.push(Picture.allPics[i].name)
+    picVotes.push(Picture.allPics[i].votes);
     var listElement = document.createElement('li');
     listElement.textContent = (Picture.allPics[i].name + ' has ' + Picture.allPics[i].views + ' views and ' + Picture.allPics[i].votes + ' votes.');
     picList.appendChild(listElement);
   }
+  var context = document.getElementById('picChart').getContext('2d');
+  var picChart = new Chart(context, {
+    type: 'bar',
+    data: {
+      labels: picNames,
+      datasets: [{
+        label: 'Votes Per Picture',
+        data: picVotes,
+        backgroundColor: arrayOfColors,
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  })
 }
 
 
@@ -109,15 +129,17 @@ load();
 
 // random picture generator
 function randomPicture() {
-  if (voteCounter > 4){
-    xfer()
+  if (voteCounter > 24) {
+    xfer();
     resultsRender();
+    imgElement1.removeEventListener('click', randomPicture);
+    imgElement2.removeEventListener('click', randomPicture);
+    imgElement3.removeEventListener('click', randomPicture);
+  }
       // for (var i = 0 ; i < Picture.allPics.length ; i++)
       // var listElement = document.createElement('li');
       // listElement.textContent = (Picture.allPics[i].votes + ' votes for ' + Picture.allPics[i].name);
       // picList.appendChild(listElement);
-
-  }
     else {
   voteCounter ++
   //event.target.votes ++
@@ -168,9 +190,8 @@ function randomPicture() {
 //randomPicture();
 
 // render
-
-//
 }
+//
 
 //function cycle() {
 
