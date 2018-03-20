@@ -2,7 +2,7 @@
 Picture.allPics = [];
 Picture.threePics = [];
 var voteCounter = 0;
-
+var picList = document.getElementById('picList');
 // constructor
 function Picture(name, filepath) {
   this.name = name;
@@ -11,7 +11,12 @@ function Picture(name, filepath) {
   this.votes = 0
   Picture.allPics.push(this)
 }
-
+function xfer(){
+  Picture.allPics.push(Picture.threePics[0]);
+  Picture.allPics.push(Picture.threePics[1]);
+  Picture.allPics.push(Picture.threePics[2]);
+  Picture.threePics.splice(0, 3);
+}
 
 new Picture('bag' , 'img/bag.jpg');
 new Picture('banana' , 'img/banana.jpg');
@@ -48,6 +53,12 @@ imgElement3.addEventListener('click', randomPicture);
 function load() {
 
 
+
+  //  else...
+  
+  
+  
+  
   var randomIndex1 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement1.src = Picture.allPics[randomIndex1].filepath;
   imgElement1.alt = Picture.allPics[randomIndex1].name;
@@ -68,13 +79,21 @@ function load() {
   Picture.allPics[randomIndex3].views ++;
   Picture.threePics.push(Picture.allPics[randomIndex3]);
   Picture.allPics.splice(randomIndex3, 1);
+  
+};
 
-      console.log
-    }
 load();
 
 // random picture generator
 function randomPicture() {
+  if (voteCounter > 4){
+    xfer()
+      for (var i = 0 ; i < Picture.allPics.length ; i++)
+      var liElement = document.createElement('li');
+      liElement.textContent = (Picture.allPics[i].votes + ' votes for ' + Picture.allPics[i].name);
+      picList.appendChild(liElement);
+  }
+    else {
   voteCounter ++
   //event.target.votes ++
   //Picture.threePics[event.target].votes ++
@@ -117,25 +136,16 @@ function randomPicture() {
   console.log(Picture.allPics);
   console.log(Picture.threePics);
   console.log(voteCounter);
-  if (voteCounter > 4){
-    console.log('IM HIGH');
-    alert('IM HIGH')
+//  if (voteCounter > 4){
+ //   var li = document.('storeList')
 };
 
-
-
-
-
-
-
-};
 //randomPicture();
 
 // render
 
 //
-
-
-function cycle() {
-
 }
+
+//function cycle() {
+
