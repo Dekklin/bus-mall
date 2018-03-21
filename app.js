@@ -1,8 +1,10 @@
-'use strict'
+'use strict';
 Picture.allPics = [];
 Picture.threePics = [];
+var picNames = [];
+var picVotes = [];
 var voteCounter = 0;
-var picList = document.getElementById('picList');
+var picList = document.getElementById('piclist');
 // constructor
 function Picture(name, filepath) {
   this.name = name;
@@ -16,6 +18,38 @@ function xfer(){
   Picture.allPics.push(Picture.threePics[1]);
   Picture.allPics.push(Picture.threePics[2]);
   Picture.threePics.splice(0, 3);
+}
+function resultsRender() {
+  var arrayOfColors = ['red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue'];
+  for(var i in Picture.allPics) {
+    picNames.push(Picture.allPics[i].name)
+    picVotes.push(Picture.allPics[i].votes);
+    var listElement = document.createElement('li');
+    listElement.textContent = (Picture.allPics[i].name + ' has ' + Picture.allPics[i].views + ' views and ' + Picture.allPics[i].votes + ' votes.');
+    picList.appendChild(listElement);
+  }
+  var context = document.getElementById('picChart').getContext('2d');
+  var picChart = new Chart(context, {
+    type: 'bar',
+    data: {
+      labels: picNames,
+      datasets: [{
+        label: 'Votes Per Picture',
+        data: picVotes,
+        backgroundColor: arrayOfColors,
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            //integer intervals
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  })
 }
 
 new Picture('bag' , 'img/bag.jpg');
@@ -38,7 +72,6 @@ new Picture('unicorn' , 'img/unicorn.jpg');
 new Picture('usb' , 'img/usb.gif');
 new Picture('water-can' , 'img/water-can.jpg');
 new Picture('wine-glass' , 'img/wine-glass.jpg');
-
 // access the element from the DOM
 var imgElement1 = document.getElementById('pic1');
 var imgElement2 = document.getElementById('pic2');
@@ -46,106 +79,64 @@ var imgElement3 = document.getElementById('pic3');
 imgElement1.addEventListener('click', randomPicture);
 imgElement2.addEventListener('click', randomPicture);
 imgElement3.addEventListener('click', randomPicture);
-
-
-
 //On Load
 function load() {
-
-
-
-  //  else...
-  
-  
-  
-  
   var randomIndex1 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement1.src = Picture.allPics[randomIndex1].filepath;
   imgElement1.alt = Picture.allPics[randomIndex1].name;
   Picture.allPics[randomIndex1].views ++;
   Picture.threePics.push(Picture.allPics[randomIndex1]);
   Picture.allPics.splice(randomIndex1, 1);
-  
   var randomIndex2 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement2.src = Picture.allPics[randomIndex2].filepath;
   imgElement2.alt = Picture.allPics[randomIndex2].name;
   Picture.allPics[randomIndex2].views ++;
   Picture.threePics.push(Picture.allPics[randomIndex2]);
   Picture.allPics.splice(randomIndex2, 1);
-  
   var randomIndex3 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement3.src = Picture.allPics[randomIndex3].filepath;
   imgElement3.alt = Picture.allPics[randomIndex3].name;
   Picture.allPics[randomIndex3].views ++;
   Picture.threePics.push(Picture.allPics[randomIndex3]);
   Picture.allPics.splice(randomIndex3, 1);
-  
 };
-
 load();
-
 // random picture generator
 function randomPicture() {
-  if (voteCounter > 4){
-    xfer()
-      for (var i = 0 ; i < Picture.allPics.length ; i++)
-      var liElement = document.createElement('li');
-      liElement.textContent = (Picture.allPics[i].votes + ' votes for ' + Picture.allPics[i].name);
-      picList.appendChild(liElement);
+  if (voteCounter > 24) {
+    xfer();
+    resultsRender();
+    imgElement1.removeEventListener('click', randomPicture);
+    imgElement2.removeEventListener('click', randomPicture);
+    imgElement3.removeEventListener('click', randomPicture);
   }
-    else {
+  else {
   voteCounter ++
-  //event.target.votes ++
-  //Picture.threePics[event.target].votes ++
-  //event.target.votes.value ++
-  for(var i = 0; i < Picture.threePics.length; i++)
+  for(var i in Picture.threePics)
     if(event.target.alt === Picture.threePics[i].name){
       Picture.threePics[i].votes ++
-
-     // console.log();
     }
-
   var randomIndex1 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement1.src = Picture.allPics[randomIndex1].filepath;
   imgElement1.alt = Picture.allPics[randomIndex1].name;
   Picture.allPics[randomIndex1].views ++;
   Picture.threePics.push(Picture.allPics[randomIndex1]);
   Picture.allPics.splice(randomIndex1, 1);
-  
   var randomIndex2 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement2.src = Picture.allPics[randomIndex2].filepath;
   imgElement2.alt = Picture.allPics[randomIndex2].name;
   Picture.allPics[randomIndex2].views ++;
   Picture.threePics.push(Picture.allPics[randomIndex2]);
   Picture.allPics.splice(randomIndex2, 1);
-  
   var randomIndex3 = Math.floor(Math.random() * Picture.allPics.length);
   imgElement3.src = Picture.allPics[randomIndex3].filepath;
   imgElement3.alt = Picture.allPics[randomIndex3].name;
   Picture.allPics[randomIndex3].views ++
   Picture.threePics.push(Picture.allPics[randomIndex3]);
   Picture.allPics.splice(randomIndex3, 1);
-  
-
   Picture.allPics.push(Picture.threePics[0]);
   Picture.allPics.push(Picture.threePics[1]);
   Picture.allPics.push(Picture.threePics[2]);
   Picture.threePics.splice(0, 3);
-  //cycle
-  console.log(randomIndex1,randomIndex2, randomIndex3);
-  console.log(Picture.allPics);
-  console.log(Picture.threePics);
-  console.log(voteCounter);
-//  if (voteCounter > 4){
- //   var li = document.('storeList')
 };
-
-//randomPicture();
-
-// render
-
-//
-}
-
-//function cycle() {
-
+};
